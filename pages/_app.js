@@ -18,7 +18,6 @@ class MyApp extends App {
 
   render() {
     const { Component, pageProps } = this.props;
-    console.log("Component:", Component);
 
     return (
       <ApolloProvider client={withData}>

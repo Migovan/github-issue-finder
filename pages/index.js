@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import withData from "../lib/apollo";
 import { gql } from "apollo-boost";
 import { Query } from "react-apollo";
@@ -31,39 +31,44 @@ export default withData(props => {
   const [name, setName] = useState("");
   const [send, setSend] = useState(false);
 
+  useEffect(() => {
+    setOwner(localStorage.getItem("myOwnerInLocalStorage"));
+    setName(localStorage.getItem("myNameInLocalStorage"));
+  }, [owner]);
+
   const onChangeOwner = value => {
-    setOwner(value);
+    localStorage.setItem("myOwnerInLocalStorage", value);
+    setOwner(localStorage.getItem("myOwnerInLocalStorage"));
     setSend(false);
   };
 
   const onChangeName = value => {
-    setName(value);
+    localStorage.setItem("myNameInLocalStorage", value);
+    setName(localStorage.getItem("myNameInLocalStorage"));
     setSend(false);
   };
 
   return (
     <>
-      <Input onChange={e => onChangeOwner(e.target.value)} />
-      <Input onChange={e => onChangeName(e.target.value)} />
+      <Input onChange={e => onChangeOwner(e.target.value)} value={owner} />
+      <Input onChange={e => onChangeName(e.target.value)} value={name} />
       <button onClick={() => setSend(true)}>Search</button>
-      {send ? (
-        <Query
-          query={GET_ISSUES}
-          variables={{
-            owner,
-            name
-          }}
-        >
-          {({ loading, error, data }) => {
-            if (loading || error) {
-              console.error(error);
-              return null;
-            }
+      <Query
+        query={GET_ISSUES}
+        variables={{
+          owner,
+          name
+        }}
+      >
+        {({ loading, error, data }) => {
+          if (loading || error) {
+            // console.error(error);
+            return null;
+          }
 
-            return <IssuesList data={data} owner={owner} name={name} />;
-          }}
-        </Query>
-      ) : null}
+          return <IssuesList data={data} owner={owner} name={name} />;
+        }}
+      </Query>
     </>
   );
 });
