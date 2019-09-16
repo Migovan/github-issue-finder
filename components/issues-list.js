@@ -6,8 +6,8 @@ const IssuesList = ({ data, owner, name }) => {
   const issues = data.repository.issues.edges;
 
   return (
-    <>
-      <h3>Issue</h3>
+    <Wrraper>
+      <h3>Issues</h3>
       <List>
         {issues.map(i => {
           const { node } = i;
@@ -27,9 +27,11 @@ const IssuesList = ({ data, owner, name }) => {
           );
         })}
       </List>
-    </>
+    </Wrraper>
   );
 };
+
+const Wrraper = styled.div``;
 
 const List = styled.div``;
 
