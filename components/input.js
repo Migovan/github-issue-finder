@@ -4,9 +4,9 @@ import styled from "styled-components";
 const Input = ({ onChange, value, label, error, errorMessage, ...props }) => {
   return (
     <Wrraper {...props}>
-      {label && <span>{label}</span>}
+      {label && <Label>{label}</Label>}
       <StyledInput value={value} onChange={e => onChange(e)} error={error} />
-      {errorMessage && <span>{errorMessage}</span>}
+      {error && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </Wrraper>
   );
 };
@@ -14,21 +14,30 @@ const Input = ({ onChange, value, label, error, errorMessage, ...props }) => {
 const Wrraper = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
+`;
 
-  span {
-    margin-bottom: 3px;
-    font-size: 12px;
-    color: #a09e9eb0;
-  }
+const Label = styled.span`
+  margin-bottom: 3px;
+  font-size: 12px;
+  color: #ead098;
 `;
 const StyledInput = styled.input`
   outline: none;
-  padding: 10px;
-  border-radius: 5px;
-  border: ${({ error }) => (error ? "2px solid #ff0000b0" : "1px solid #000")};
+  padding: 15px;
+  border: 0px solid #000;
   cursor: pointer;
   font-size: 15px;
-  color: #000;
+  color: #5a2314;
+  font-weight: 500;
+  box-shadow: ${({ error }) =>
+    error ? "-8px 8px #ff0000b0" : "-8px 8px rebeccapurple"};
+`;
+
+const ErrorMessage = styled.span`
+  color: #ff0000b0;
+  margin-top: 10px;
+  font-size: 12px;
 `;
 
 export default Input;

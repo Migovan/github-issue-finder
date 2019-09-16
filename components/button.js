@@ -10,15 +10,18 @@ const Button = ({ onClick, children, ...props }) => {
 };
 
 const StyledButton = styled.button`
-  padding: 5px 20px;
-  background: #fff;
-  border-radius: 5px;
-  border: 1px solid;
+  padding: 15px 40px;
+  background: #d4af60;
+  border: 0px solid;
   font-weight: 500;
   cursor: pointer;
+  outline: none;
+  color: #5a2314;
+  font-size: 15px;
+  box-shadow: -8px 8px rebeccapurple;
   &:hover {
-    background: #000;
-    color: #fff;
+    background: #ec633e;
+    color: #efdd47;
   }
 `;
 

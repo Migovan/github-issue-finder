@@ -12,7 +12,7 @@ import IssuesList from "../components/issues-list";
 const GET_ISSUES = gql`
   query($owner: String!, $name: String!) {
     repository(owner: $owner, name: $name) {
-      issues(last: 20) {
+      issues(last: 10) {
         edges {
           node {
             id
@@ -60,17 +60,17 @@ export default withData(props => {
       <Form>
         <CustomInputOwner
           onChange={e => onChangeOwner(e.target.value)}
-          value={owner}
+          value={owner || ""}
           label={"*Owner"}
           error={errorOwner}
-          // errorMessage="Проверьте имя пользователя/организации."
+          errorMessage="Проверьте имя пользователя/организации."
         />
         <CustomInputName
           onChange={e => onChangeName(e.target.value)}
-          value={name}
+          value={name || ""}
           label={"*Name repository"}
           error={errorName}
-          // errorMessage="Проверьте имя репозитория."
+          errorMessage="Проверьте имя репозитория."
         />
         <Button onClick={() => setSend(true)} type="button">
           Search
@@ -86,7 +86,10 @@ export default withData(props => {
         >
           {({ loading, error, data }) => {
             if (loading || error) {
-              if (String(error).includes("User")) {
+              if (
+                String(error).includes("User") ||
+                String(error).includes("Organization")
+              ) {
                 setErrorOwner(true);
               } else if (String(error).includes("Repository")) {
                 setErrorName(true);
@@ -107,11 +110,12 @@ export default withData(props => {
 const GlobalStyle = createGlobalStyle`
   body {
     font-family: sans-serif;
+    background: #5c9f96;
   }
 `;
 
 const Container = styled.div`
-  width: 50%;
+  width: 70%;
   margin-left: auto;
   margin-right: auto;
   margin-top: 50px;
@@ -132,4 +136,5 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 30%;
 `;

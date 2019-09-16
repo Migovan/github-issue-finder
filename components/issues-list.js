@@ -7,7 +7,6 @@ const IssuesList = ({ data, owner, name }) => {
 
   return (
     <Wrraper>
-      <h3>Issues</h3>
       <List>
         {issues.map(i => {
           const { node } = i;
@@ -31,8 +30,26 @@ const IssuesList = ({ data, owner, name }) => {
   );
 };
 
-const Wrraper = styled.div``;
+const Wrraper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin-top: 30px;
+  padding: 35px;
+  background: #ddd8e6;
+  font-weight: 500;
+  box-shadow: -8px 8px rebeccapurple;
+`;
 
-const List = styled.div``;
+const List = styled.div`
+  li {
+    /* list-style-type: none; */
+    a {
+      color: #5a2314;
+      text-decoration: none;
+      font-size: 20px;
+    }
+  }
+`;
 
 export default IssuesList;
