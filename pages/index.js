@@ -29,7 +29,7 @@ const GET_ISSUES = gql`
   }
 `;
 
-export default withData(props => {
+const Page = () => {
   const [owner, setOwner] = useState("");
   const [name, setName] = useState("");
   const [send, setSend] = useState(false);
@@ -101,18 +101,11 @@ export default withData(props => {
           }}
         </Query>
       ) : null}
-
-      <GlobalStyle />
     </Container>
   );
-});
+};
 
-const GlobalStyle = createGlobalStyle`
-  body {
-    font-family: sans-serif;
-    background: #5c9f96;
-  }
-`;
+export default Page;
 
 const Container = styled.div`
   width: 70%;

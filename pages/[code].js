@@ -62,10 +62,17 @@ const Page = ({ router }) => {
 };
 
 const Wrapper = styled.div`
-  margin: 50px;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
 `;
 const Title = styled.h1``;
 
-const Avatar = styled.img``;
+const Avatar = styled.img`
+  width: 200px;
+`;
 
-export default withData(withRouter(Page));
+export default withRouter(Page);
