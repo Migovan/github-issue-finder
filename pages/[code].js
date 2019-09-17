@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { withRouter } from "next/router";
 import { gql } from "apollo-boost";
 import { Query } from "react-apollo";
-import withData from "../lib/apollo";
+import { BROWN, BOX_SHADOW_PURPLE, PINK } from "../styles/constants";
 
 const GET_ISSUE = gql`
   query($owner: String!, $name: String!, $number: Int!) {
@@ -51,9 +51,12 @@ const Page = ({ router }) => {
         return (
           <Wrapper>
             <Avatar src={dataOwner.avatarUrl} />
-            <p>{dataOwner.login}</p>
-            <Title>{title}</Title>
-            <div dangerouslySetInnerHTML={createMarkup()} />
+            <BlockLogin>
+              <Icon src="./static/icons/owner.png" />
+              <p>{dataOwner.login}</p>
+            </BlockLogin>
+            <Title>{title}.</Title>
+            <Content dangerouslySetInnerHTML={createMarkup()} />
           </Wrapper>
         );
       }}
@@ -69,10 +72,36 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const Title = styled.h1``;
+const Title = styled.h1`
+  color: ${BROWN};
+`;
 
 const Avatar = styled.img`
   width: 200px;
+`;
+
+const Content = styled.div`
+  padding: 35px;
+  background: ${PINK};
+  font-weight: 500;
+  box-shadow: ${BOX_SHADOW_PURPLE};
+  color: ${BROWN};
+`;
+
+const Icon = styled.img`
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  color: ${BROWN};
+`;
+
+const BlockLogin = styled.div`
+  display: flex;
+  align-items: baseline;
+
+  p {
+    color: ${BROWN};
+  }
 `;
 
 export default withRouter(Page);

@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
-import withData from "../lib/apollo";
 import { gql } from "apollo-boost";
 import { Query } from "react-apollo";
 import styled from "styled-components";
-import { createGlobalStyle } from "styled-components";
 import Input from "../components/input";
 import Button from "../components/button";
+import Spinner from "../components/spinner";
 
 import IssuesList from "../components/issues-list";
 
 const GET_ISSUES = gql`
-  query($owner: String!, $name: String!) {
+  query($owner: String!, $name: String!, $paginate: Int!) {
     repository(owner: $owner, name: $name) {
-      issues(last: 10) {
+      issues(last: $paginate) {
         edges {
           node {
             id
@@ -35,6 +34,8 @@ const Page = () => {
   const [send, setSend] = useState(false);
   const [errorOwner, setErrorOwner] = useState("");
   const [errorName, setErrorName] = useState("");
+  const [paginate, setPaginate] = useState(5);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setOwner(localStorage.getItem("myOwnerInLocalStorage"));
@@ -55,6 +56,10 @@ const Page = () => {
     setErrorName(false);
   };
 
+  const changePaginate = () => {
+    setPaginate(paginate + 5);
+  };
+
   return (
     <Container>
       <Form>
@@ -72,7 +77,7 @@ const Page = () => {
           error={errorName}
           errorMessage="Проверьте имя репозитория."
         />
-        <Button onClick={() => setSend(true)} type="button">
+        <Button onClick={() => setSend(true)} type="button" loading={loading}>
           Search
         </Button>
       </Form>
@@ -81,11 +86,13 @@ const Page = () => {
           query={GET_ISSUES}
           variables={{
             owner,
-            name
+            name,
+            paginate
           }}
         >
           {({ loading, error, data }) => {
             if (loading || error) {
+              setLoading(loading);
               if (
                 String(error).includes("User") ||
                 String(error).includes("Organization")
@@ -96,8 +103,14 @@ const Page = () => {
               }
               return null;
             }
+            setLoading(loading);
 
-            return <IssuesList data={data} owner={owner} name={name} />;
+            return (
+              <>
+                <IssuesList data={data} owner={owner} name={name} />
+                <CustomButton onClick={changePaginate}>More</CustomButton>
+              </>
+            );
           }}
         </Query>
       ) : null}
@@ -130,4 +143,8 @@ const Form = styled.form`
   flex-direction: column;
   align-items: center;
   width: 30%;
+`;
+
+const CustomButton = styled(Button)`
+  width: 20%;
 `;

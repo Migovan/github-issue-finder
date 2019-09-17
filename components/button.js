@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { BROWN, BOX_SHADOW_PURPLE } from "../styles/constants";
+import Spinner from "../components/spinner";
 
-const Button = ({ onClick, children, ...props }) => {
+const Button = ({ onClick, children, loading, ...props }) => {
   return (
     <StyledButton {...props} onClick={onClick}>
-      {children}
+      {loading ? <Spinner /> : children}
     </StyledButton>
   );
 };
