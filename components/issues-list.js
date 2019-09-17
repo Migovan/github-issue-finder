@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
+import { BROWN, BOX_SHADOW_PURPLE } from "../styles/constants";
 
 const IssuesList = ({ data, owner, name }) => {
   const issues = data.repository.issues.edges;
@@ -38,14 +39,13 @@ const Wrraper = styled.div`
   padding: 35px;
   background: #ddd8e6;
   font-weight: 500;
-  box-shadow: -8px 8px rebeccapurple;
+  box-shadow: ${BOX_SHADOW_PURPLE};
 `;
 
 const List = styled.div`
   li {
-    /* list-style-type: none; */
     a {
-      color: #5a2314;
+      color: ${BROWN};
       text-decoration: none;
       font-size: 20px;
     }

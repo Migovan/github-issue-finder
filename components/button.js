@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { BROWN, BOX_SHADOW_PURPLE } from "../styles/constants";
 
 const Button = ({ onClick, children, ...props }) => {
   return (
@@ -16,9 +17,9 @@ const StyledButton = styled.button`
   font-weight: 500;
   cursor: pointer;
   outline: none;
-  color: #5a2314;
+  color: ${BROWN};
   font-size: 15px;
-  box-shadow: -8px 8px rebeccapurple;
+  box-shadow: ${BOX_SHADOW_PURPLE};
   &:hover {
     background: #ec633e;
     color: #efdd47;
