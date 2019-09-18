@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import { BROWN, BOX_SHADOW_PURPLE, PINK } from "../styles/constants";
+import { BROWN, BOX_SHADOW_PURPLE, PINK, RED } from "../styles/constants";
 
 const IssuesList = ({ data, owner, name }) => {
   const [result, setResult] = useState([]);
@@ -13,7 +13,7 @@ const IssuesList = ({ data, owner, name }) => {
       <List>
         {issues.map(i => {
           const { node } = i;
-          const { id, title, author, number } = node;
+          const { id, title, author, number, closed } = node;
 
           return (
             <ul key={id}>
@@ -24,6 +24,7 @@ const IssuesList = ({ data, owner, name }) => {
                 >
                   <a href={`/${author.login}`}>{title}</a>
                 </Link>
+                <Tag closed={closed}>{closed ? "closed" : "open"}</Tag>
               </li>
             </ul>
           );
@@ -36,8 +37,8 @@ const IssuesList = ({ data, owner, name }) => {
 const Wrraper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
-  margin-top: 30px;
+  width: 100%;
+  margin-top: 20px;
 `;
 
 const List = styled.div`
@@ -47,15 +48,28 @@ const List = styled.div`
   box-shadow: ${BOX_SHADOW_PURPLE};
   margin-bottom: 20px;
   li {
+    display: flex;
+    align-items: center;
     a {
       color: ${BROWN};
       text-decoration: none;
       font-size: 20px;
+      margin-right: 10px;
       &:hover {
         text-decoration: underline;
       }
     }
   }
+`;
+
+const Tag = styled.span`
+  font-size: 11px;
+  border: ${({ closed }) =>
+    closed ? `2px solid ${RED}` : `2px solid #97b088`};
+  padding: 1px 3px;
+  border-radius: 5px;
+  color: ${({ closed }) => (closed ? RED : "#97b088")};
+  font-weight: 600;
 `;
 
 export default IssuesList;

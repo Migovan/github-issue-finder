@@ -4,20 +4,30 @@ import { Query } from "react-apollo";
 import styled from "styled-components";
 import Input from "../components/input";
 import Button from "../components/button";
-import Spinner from "../components/spinner";
-
 import IssuesList from "../components/issues-list";
+import Filter from "../components/filter";
+
+const options = [
+  { name: "Closed", states: "CLOSED" },
+  { name: "Open", states: "OPEN" }
+];
 
 const GET_ISSUES = gql`
-  query($owner: String!, $name: String!, $paginate: Int!) {
+  query(
+    $owner: String!
+    $name: String!
+    $paginate: Int!
+    $states: [IssueState!]
+  ) {
     repository(owner: $owner, name: $name) {
-      issues(first: $paginate) {
+      issues(last: $paginate, states: $states) {
         edges {
           node {
             id
             number
             title
             url
+            closed
             author {
               login
             }
@@ -37,6 +47,7 @@ const Page = () => {
   const [paginate, setPaginate] = useState(5);
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [states, setStates] = useState(null);
 
   useEffect(() => {
     setOwner(localStorage.getItem("myOwnerInLocalStorage"));
@@ -89,13 +100,20 @@ const Page = () => {
           Search
         </Button>
       </Form>
+      {send && (
+        <BlockFilter>
+          <Filter options={options} onChange={value => setStates(value)} />
+        </BlockFilter>
+      )}
+
       {send ? (
         <Query
           query={GET_ISSUES}
           variables={{
             owner,
             name,
-            paginate
+            paginate,
+            states
           }}
         >
           {({ loading, error, data }) => {
@@ -132,7 +150,7 @@ const Page = () => {
 export default Page;
 
 const Container = styled.div`
-  width: 70%;
+  width: 60%;
   margin-left: auto;
   margin-right: auto;
   margin-top: 50px;
@@ -158,4 +176,11 @@ const Form = styled.form`
 
 const CustomButton = styled(Button)`
   width: 20%;
+`;
+
+const BlockFilter = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 30px;
 `;

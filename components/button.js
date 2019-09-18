@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { BROWN, BOX_SHADOW_PURPLE, PINK } from "../styles/constants";
+import { BROWN, BOX_SHADOW_PURPLE, PINK, YELLOW } from "../styles/constants";
 
 const Button = ({ onClick, children, loading, disabled, ...props }) => {
   return (
@@ -17,7 +17,7 @@ const Button = ({ onClick, children, loading, disabled, ...props }) => {
 
 const StyledButton = styled.button`
   padding: 15px 40px;
-  background: #d4af60;
+  background: ${YELLOW};
   border: 0px solid;
   font-weight: 500;
   cursor: pointer;
