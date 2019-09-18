@@ -1,22 +1,23 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { BROWN, PINK, YELLOW } from "../styles/constants";
+import { BROWN, PINK } from "../styles/constants";
 
 const Filter = ({ options, onChange, ...props }) => {
   const [checked, setChecked] = useState("");
-  console.log("options:", options);
+
   return options.map(i => {
+    const { states, name } = i;
     return (
       <Button
-        key={i.states}
+        key={states}
         {...props}
         onClick={() => {
-          setChecked(i.states);
-          onChange(i.states);
+          setChecked(states);
+          onChange(states);
         }}
-        active={checked === i.states}
+        active={checked === states}
       >
-        {i.name}
+        {name}
       </Button>
     );
   });
