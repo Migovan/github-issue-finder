@@ -6,7 +6,7 @@ import { BROWN, BOX_SHADOW_PURPLE, PINK } from "../styles/constants";
 const IssuesList = ({ data, owner, name }) => {
   const [result, setResult] = useState([]);
   const issues = data.repository.issues.edges;
-  const newResult = [[...result, issues]];
+  const newResult = [...result, issues];
 
   return (
     <Wrraper>

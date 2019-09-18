@@ -11,7 +11,7 @@ import IssuesList from "../components/issues-list";
 const GET_ISSUES = gql`
   query($owner: String!, $name: String!, $paginate: Int!) {
     repository(owner: $owner, name: $name) {
-      issues(last: $paginate) {
+      issues(first: $paginate) {
         edges {
           node {
             id
@@ -36,6 +36,7 @@ const Page = () => {
   const [errorName, setErrorName] = useState("");
   const [paginate, setPaginate] = useState(5);
   const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     setOwner(localStorage.getItem("myOwnerInLocalStorage"));
@@ -47,6 +48,7 @@ const Page = () => {
     setOwner(localStorage.getItem("myOwnerInLocalStorage"));
     setSend(false);
     setErrorOwner(false);
+    setDisabled(false);
   };
 
   const onChangeName = value => {
@@ -54,6 +56,7 @@ const Page = () => {
     setName(localStorage.getItem("myNameInLocalStorage"));
     setSend(false);
     setErrorName(false);
+    setDisabled(false);
   };
 
   const changePaginate = () => {
@@ -77,7 +80,12 @@ const Page = () => {
           error={errorName}
           errorMessage="Проверьте имя репозитория."
         />
-        <Button onClick={() => setSend(true)} type="button" loading={loading}>
+        <Button
+          onClick={() => setSend(true)}
+          type="button"
+          loading={loading}
+          disabled={disabled}
+        >
           Search
         </Button>
       </Form>
@@ -93,6 +101,7 @@ const Page = () => {
           {({ loading, error, data }) => {
             if (loading || error) {
               setLoading(loading);
+              error && setDisabled(true);
               if (
                 String(error).includes("User") ||
                 String(error).includes("Organization")
@@ -108,7 +117,9 @@ const Page = () => {
             return (
               <>
                 <IssuesList data={data} owner={owner} name={name} />
-                <CustomButton onClick={changePaginate}>More</CustomButton>
+                <CustomButton onClick={changePaginate} loading={loading}>
+                  More
+                </CustomButton>
               </>
             );
           }}
