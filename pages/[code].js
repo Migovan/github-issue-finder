@@ -16,6 +16,19 @@ const GET_ISSUE = gql`
       issue(number: $number) {
         title
         bodyHTML
+        comments(last: 10) {
+          edges {
+            node {
+              id
+              author {
+                avatarUrl
+                login
+              }
+              bodyHTML
+              publishedAt
+            }
+          }
+        }
       }
     }
   }
@@ -25,7 +38,7 @@ const Page = ({ router }) => {
   const { query } = router;
   const { owner, name, number } = query;
 
-  return (
+  return owner && name && number ? (
     <Query
       query={GET_ISSUE}
       variables={{
@@ -36,13 +49,13 @@ const Page = ({ router }) => {
     >
       {({ loading, error, data }) => {
         if (loading || error) {
-          // console.error(error);
           return null;
         }
 
         const dataIssue = data.repository.issue;
         const dataOwner = data.repository.owner;
-        const { bodyHTML, title } = dataIssue;
+        const { bodyHTML, title, comments } = dataIssue;
+        console.log("comments:", comments);
 
         const createMarkup = () => {
           return { __html: bodyHTML };
@@ -61,7 +74,7 @@ const Page = ({ router }) => {
         );
       }}
     </Query>
-  );
+  ) : null;
 };
 
 const Wrapper = styled.div`
