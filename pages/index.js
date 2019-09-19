@@ -8,6 +8,7 @@ import IssuesList from "../components/issues-list";
 import Filter from "../components/filter";
 
 const options = [
+  { name: "All", states: null },
   { name: "Closed", states: "CLOSED" },
   { name: "Open", states: "OPEN" }
 ];

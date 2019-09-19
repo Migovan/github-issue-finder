@@ -7,15 +7,19 @@ const Filter = ({ options, onChange, ...props }) => {
 
   return options.map(i => {
     const { states, name } = i;
+    const init = checked === "" && states === null;
+
+    const checkedFilter = () => {
+      setChecked(states);
+      onChange(states);
+    };
+
     return (
       <Button
         key={states}
         {...props}
-        onClick={() => {
-          setChecked(states);
-          onChange(states);
-        }}
-        active={checked === states}
+        onClick={checkedFilter}
+        active={checked === states || init}
       >
         {name}
       </Button>
@@ -33,6 +37,10 @@ const Button = styled.button`
   cursor: pointer;
   outline: none;
   margin-right: 10px;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 export default Filter;
