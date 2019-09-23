@@ -4,6 +4,7 @@ import { withRouter } from "next/router";
 import { gql } from "apollo-boost";
 import { Query } from "react-apollo";
 import { BROWN, BOX_SHADOW_PURPLE, PINK } from "../styles/constants";
+import Comments from "../components/comments";
 
 const GET_ISSUE = gql`
   query($owner: String!, $name: String!, $number: Int!) {
@@ -55,8 +56,6 @@ const Page = ({ router }) => {
         const dataIssue = data.repository.issue;
         const dataOwner = data.repository.owner;
         const { bodyHTML, title, comments } = dataIssue;
-        console.log("comments:", comments);
-
         const createMarkup = () => {
           return { __html: bodyHTML };
         };
@@ -70,6 +69,7 @@ const Page = ({ router }) => {
             </BlockLogin>
             <Title>{title}.</Title>
             <Content dangerouslySetInnerHTML={createMarkup()} />
+            <Comments comments={comments.edges} />
           </Wrapper>
         );
       }}
