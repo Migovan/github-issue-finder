@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import { BROWN, BOX_SHADOW_PURPLE, PINK, RED } from "../styles/constants";
+import { BROWN, BOX_SHADOW_GREEN, PINK, RED } from "../styles/constants";
 
 const IssuesList = ({ data, owner, name }) => {
   const [result, setResult] = useState([]);
@@ -12,8 +12,9 @@ const IssuesList = ({ data, owner, name }) => {
     <Wrraper>
       <List>
         {issues.map(i => {
-          const { node } = i;
-          const { id, title, author, number, closed } = node;
+          const {
+            node: { id, title, author, number, closed }
+          } = i;
 
           return (
             <ul key={id}>
@@ -45,7 +46,7 @@ const List = styled.div`
   padding: 35px;
   background: ${PINK};
   font-weight: 500;
-  box-shadow: ${BOX_SHADOW_PURPLE};
+  box-shadow: ${BOX_SHADOW_GREEN};
   margin-bottom: 20px;
   li {
     display: flex;

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { BROWN, RED, BOX_SHADOW_PURPLE } from "../styles/constants";
+import { BROWN, RED, BOX_SHADOW_GREEN } from "../styles/constants";
 
 const Input = ({ onChange, value, label, error, errorMessage, ...props }) => {
   return (
@@ -31,7 +31,7 @@ const StyledInput = styled.input`
   font-size: 15px;
   color: ${BROWN};
   font-weight: 500;
-  box-shadow: ${({ error }) => (error ? `-8px 8px ${RED}` : BOX_SHADOW_PURPLE)};
+  box-shadow: ${({ error }) => (error ? `-8px 8px ${RED}` : BOX_SHADOW_GREEN)};
 `;
 
 const ErrorMessage = styled.span`

@@ -1,43 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import { withRouter } from "next/router";
-import { gql } from "apollo-boost";
 import { Query } from "react-apollo";
-import { BROWN, BOX_SHADOW_PURPLE, PINK } from "../styles/constants";
+import { GET_ISSUE } from "../lib/queries";
+import { BROWN, BOX_SHADOW_GREEN, PINK } from "../styles/constants";
 import Comments from "../components/comments";
 
-const GET_ISSUE = gql`
-  query($owner: String!, $name: String!, $number: Int!) {
-    repository(owner: $owner, name: $name) {
-      owner {
-        id
-        avatarUrl
-        login
-      }
-      issue(number: $number) {
-        title
-        bodyHTML
-        comments(last: 10) {
-          edges {
-            node {
-              id
-              author {
-                avatarUrl
-                login
-              }
-              bodyHTML
-              publishedAt
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 const Page = ({ router }) => {
-  const { query } = router;
-  const { owner, name, number } = query;
+  const {
+    query: { owner, name, number }
+  } = router;
 
   return owner && name && number ? (
     <Query
@@ -56,6 +28,7 @@ const Page = ({ router }) => {
         const dataIssue = data.repository.issue;
         const dataOwner = data.repository.owner;
         const { bodyHTML, title, comments } = dataIssue;
+
         const createMarkup = () => {
           return { __html: bodyHTML };
         };
@@ -97,7 +70,7 @@ const Content = styled.div`
   padding: 35px;
   background: ${PINK};
   font-weight: 500;
-  box-shadow: ${BOX_SHADOW_PURPLE};
+  box-shadow: ${BOX_SHADOW_GREEN};
   color: ${BROWN};
 `;
 

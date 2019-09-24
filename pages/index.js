@@ -1,43 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { gql } from "apollo-boost";
 import { Query } from "react-apollo";
 import styled from "styled-components";
 import Input from "../components/input";
 import Button from "../components/button";
 import IssuesList from "../components/issues-list";
 import Filter from "../components/filter";
+import { GET_ISSUES } from "../lib/queries";
 
 const options = [
   { name: "All", states: null },
   { name: "Closed", states: "CLOSED" },
   { name: "Open", states: "OPEN" }
 ];
-
-const GET_ISSUES = gql`
-  query(
-    $owner: String!
-    $name: String!
-    $paginate: Int!
-    $states: [IssueState!]
-  ) {
-    repository(owner: $owner, name: $name) {
-      issues(last: $paginate, states: $states) {
-        edges {
-          node {
-            id
-            number
-            title
-            url
-            closed
-            author {
-              login
-            }
-          }
-        }
-      }
-    }
-  }
-`;
 
 const Page = () => {
   const [owner, setOwner] = useState("");

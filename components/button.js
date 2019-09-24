@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { BROWN, BOX_SHADOW_PURPLE, PINK, YELLOW } from "../styles/constants";
+import { BROWN, BOX_SHADOW_GREEN, PINK, YELLOW } from "../styles/constants";
 
 const Button = ({ onClick, children, loading, disabled, ...props }) => {
   return (
@@ -24,7 +24,7 @@ const StyledButton = styled.button`
   outline: none;
   color: ${BROWN};
   font-size: 15px;
-  box-shadow: ${BOX_SHADOW_PURPLE};
+  box-shadow: ${BOX_SHADOW_GREEN};
   ${({ loading }) => (loading ? BtnLoading : undefined)};
   ${({ loading, disabled }) =>
     !loading &&
