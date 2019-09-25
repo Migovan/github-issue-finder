@@ -22,7 +22,7 @@ const Comments = ({ comments }) => {
         <TextBlock>
           <Info>
             <Login>{login}</Login>
-            <span>{moment(publishedAt).format("DD MMMM YYYY")}</span>
+            <Date>{moment(publishedAt).format("DD MMMM YYYY")}</Date>
           </Info>
           <div dangerouslySetInnerHTML={createMarkup()} />
         </TextBlock>
@@ -59,6 +59,11 @@ const Info = styled.div`
 
 const Login = styled.span`
   margin-right: 10px;
+`;
+
+const Date = styled.time`
+  font-weight: 100;
+  font-size: 15px;
 `;
 
 export default Comments;

@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { BROWN, BOX_SHADOW_GREEN, PINK, RED } from "../styles/constants";
 
 const IssuesList = ({ data, owner, name }) => {
-  const [result, setResult] = useState([]);
   const issues = data.repository.issues.edges;
-  const newResult = [...result, issues];
 
   return (
     <Wrraper>

@@ -2,14 +2,9 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { BROWN, BOX_SHADOW_GREEN, PINK, YELLOW } from "../styles/constants";
 
-const Button = ({ onClick, children, loading, disabled, ...props }) => {
+const Button = ({ onClick, children, disabled, ...props }) => {
   return (
-    <StyledButton
-      {...props}
-      onClick={onClick}
-      loading={loading}
-      disabled={disabled}
-    >
+    <StyledButton {...props} onClick={onClick} disabled={disabled}>
       {children}
     </StyledButton>
   );
@@ -25,9 +20,7 @@ const StyledButton = styled.button`
   color: ${BROWN};
   font-size: 15px;
   box-shadow: ${BOX_SHADOW_GREEN};
-  ${({ loading }) => (loading ? BtnLoading : undefined)};
-  ${({ loading, disabled }) =>
-    !loading &&
+  ${({ disabled }) =>
     !disabled &&
     css`
       &:hover {
@@ -41,39 +34,6 @@ const StyledButton = styled.button`
       opacity: 0.7;
       cursor: default;
     `}
-`;
-
-const BtnLoading = css`
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  position: relative;
-  color: transparent;
-  transition: 0s;
-
-  &:after {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    display: block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid ${PINK};
-    border-right: none;
-    border-bottom: none;
-    border-radius: 50%;
-    margin: auto;
-    animation: spin 0.75s linear 0s infinite;
-    content: "";
-  }
 `;
 
 export default Button;

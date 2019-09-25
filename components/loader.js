@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { PINK } from "../styles/constants";
 
-const Spinner = ({ white, ...props }) => (
+const Loader = ({ white, ...props }) => (
   <StyledSpinner viewBox="0 0 50 50" white={white} {...props}>
     <circle
       className="path"
@@ -46,4 +46,4 @@ const StyledSpinner = styled.svg`
   }
 `;
 
-export default Spinner;
+export default Loader;
