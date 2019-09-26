@@ -35,25 +35,26 @@ const Page = () => {
   const onChangeOwner = value => {
     localStorage.setItem("myOwnerInLocalStorage", value);
     setOwner(localStorage.getItem("myOwnerInLocalStorage"));
-    setDataIssues(null);
-    setPaginate(5);
-    setSend(false);
     setErrorOwner(false);
-    setDisabled(false);
+    reset();
   };
 
   const onChangeName = value => {
     localStorage.setItem("myNameInLocalStorage", value);
     setName(localStorage.getItem("myNameInLocalStorage"));
-    setDataIssues(null);
-    setPaginate(5);
-    setSend(false);
     setErrorName(false);
-    setDisabled(false);
+    reset();
   };
 
   const changePaginate = () => {
     setPaginate(paginate + 5);
+  };
+
+  const reset = () => {
+    setDataIssues(null);
+    setPaginate(5);
+    setSend(false);
+    setDisabled(false);
   };
 
   return (
