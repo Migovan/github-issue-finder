@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
-import Input from '../components/input';
-import Button from '../components/button';
+import Input from '../components/common/input';
+import Button from '../components/common/button';
 import IssuesList from '../components/issues-list';
 import Filter from '../components/filter';
-import Loader from '../components/loader';
+import Loader from '../components/common/loader';
 import { GET_ISSUES } from '../lib/queries';
 import IssuesDataContext from '../components/context/issues-data';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
-import { BROWN, BOX_SHADOW_GREEN, YELLOW } from '../styles/constants';
+import { BROWN, BOX_SHADOW_GREEN, YELLOW } from '../../styles/constants';
 
 const Button = ({ onClick, children, disabled, ...props }) => (
   <StyledButton {...props} onClick={onClick} disabled={disabled}>

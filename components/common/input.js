@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { BROWN, RED, BOX_SHADOW_GREEN } from '../styles/constants';
+import { BROWN, RED, BOX_SHADOW_GREEN } from '../../styles/constants';
 
 const Input = ({ onChange, value, label, error, errorMessage, ...props }) => (
   <Wrraper {...props}>
