@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { BROWN, PINK } from "../styles/constants";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { BROWN, PINK } from '../styles/constants';
 
 const Filter = ({ options, onChange, ...props }) => {
-  const [checked, setChecked] = useState("");
+  const [checked, setChecked] = useState('');
 
   return options.map(i => {
     const { states, name } = i;
-    const init = checked === "" && states === null;
+    const init = checked === '' && states === null;
 
     const checkedFilter = () => {
       setChecked(states);
@@ -15,12 +15,7 @@ const Filter = ({ options, onChange, ...props }) => {
     };
 
     return (
-      <Button
-        key={states}
-        {...props}
-        onClick={checkedFilter}
-        active={checked === states || init}
-      >
+      <Button key={states} {...props} onClick={checkedFilter} active={checked === states || init}>
         {name}
       </Button>
     );
@@ -28,7 +23,7 @@ const Filter = ({ options, onChange, ...props }) => {
 };
 
 const Button = styled.button`
-  background: ${({ active }) => (active ? PINK : "transparent;")};
+  background: ${({ active }) => (active ? PINK : 'transparent;')};
   padding: 10px 25px;
   border: 2px solid ${PINK};
   font-size: 15px;

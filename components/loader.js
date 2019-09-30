@@ -1,17 +1,10 @@
-import React from "react";
-import styled from "styled-components";
-import { PINK } from "../styles/constants";
+import React from 'react';
+import styled from 'styled-components';
+import { PINK } from '../styles/constants';
 
-const Loader = ({ white, ...props }) => (
-  <StyledSpinner viewBox="0 0 50 50" white={white} {...props}>
-    <circle
-      className="path"
-      cx="25"
-      cy="25"
-      r="20"
-      fill="none"
-      strokeWidth="4"
-    />
+const Loader = ({ ...props }) => (
+  <StyledSpinner viewBox="0 0 50 50" {...props}>
+    <circle className="path" cx="25" cy="25" r="20" fill="none" strokeWidth="4" />
   </StyledSpinner>
 );
 

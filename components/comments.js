@@ -1,35 +1,35 @@
-import React from "react";
-import styled from "styled-components";
-import moment from "moment";
-import { PINK, BOX_SHADOW_GREEN } from "../styles/constants";
+import React from 'react';
+import styled from 'styled-components';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import { PINK, BOX_SHADOW_GREEN } from '../styles/constants';
 
-const Comments = ({ comments }) => {
-  return comments.map(i => {
+const Comments = ({ comments }) =>
+  comments.map(i => {
     const { node } = i;
     const {
       id,
       author: { login, avatarUrl },
       bodyHTML,
-      publishedAt
+      publishedAt,
     } = node;
 
-    const createMarkup = () => {
-      return { __html: bodyHTML };
-    };
+    const createMarkup = () => ({
+      __html: bodyHTML,
+    });
     return (
       <Comment key={id}>
         <Avatar src={avatarUrl} />
         <TextBlock>
           <Info>
             <Login>{login}</Login>
-            <Date>{moment(publishedAt).format("DD MMMM YYYY")}</Date>
+            <Date>{moment(publishedAt).format('DD MMMM YYYY')}</Date>
           </Info>
           <div dangerouslySetInnerHTML={createMarkup()} />
         </TextBlock>
       </Comment>
     );
   });
-};
 
 const Comment = styled.div`
   display: flex;
@@ -65,5 +65,9 @@ const Date = styled.time`
   font-weight: 100;
   font-size: 15px;
 `;
+
+Comments.propTypes = {
+  comments: PropTypes.arrayOf.isRequired,
+};
 
 export default Comments;

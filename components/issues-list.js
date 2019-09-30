@@ -1,7 +1,8 @@
-import React from "react";
-import styled from "styled-components";
-import Link from "next/link";
-import { BROWN, BOX_SHADOW_GREEN, PINK, RED } from "../styles/constants";
+import React from 'react';
+import styled from 'styled-components';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import { BROWN, BOX_SHADOW_GREEN, PINK, RED } from '../styles/constants';
 
 const IssuesList = ({ data, owner, name }) => {
   const issues = data.repository.issues.edges;
@@ -11,19 +12,26 @@ const IssuesList = ({ data, owner, name }) => {
       <List>
         {issues.map(i => {
           const {
-            node: { id, title, author, number, closed }
+            node: { id, title, author, number, closed },
           } = i;
 
           return (
             <ul key={id}>
               <li>
                 <Link
-                  href={{ pathname: "/[code]", query: { owner, name, number } }}
+                  href={{
+                    pathname: '/[code]',
+                    query: {
+                      owner,
+                      name,
+                      number,
+                    },
+                  }}
                   as={`/${author.login}`}
                 >
                   <a href={`/${author.login}`}>{title}</a>
                 </Link>
-                <Tag closed={closed}>{closed ? "closed" : "open"}</Tag>
+                <Tag closed={closed}>{closed ? 'closed' : 'open'}</Tag>
               </li>
             </ul>
           );
@@ -63,12 +71,17 @@ const List = styled.div`
 
 const Tag = styled.span`
   font-size: 11px;
-  border: ${({ closed }) =>
-    closed ? `2px solid ${RED}` : `2px solid #97b088`};
+  border: ${({ closed }) => (closed ? `2px solid ${RED}` : '2px solid #97b088')};
   padding: 1px 3px;
   border-radius: 5px;
-  color: ${({ closed }) => (closed ? RED : "#97b088")};
+  color: ${({ closed }) => (closed ? RED : '#97b088')};
   font-weight: 600;
 `;
+
+IssuesList.propTypes = {
+  data: PropTypes.objectOf.isRequired,
+  owner: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+};
 
 export default IssuesList;

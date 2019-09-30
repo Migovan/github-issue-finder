@@ -1,14 +1,15 @@
-import React from "react";
-import styled from "styled-components";
-import { withRouter } from "next/router";
-import { Query } from "react-apollo";
-import { GET_ISSUE } from "../lib/queries";
-import { BROWN, BOX_SHADOW_GREEN, PINK } from "../styles/constants";
-import Comments from "../components/comments";
+import React from 'react';
+import styled from 'styled-components';
+import { withRouter } from 'next/router';
+import PropTypes from 'prop-types';
+import { Query } from 'react-apollo';
+import { GET_ISSUE } from '../lib/queries';
+import { BROWN, BOX_SHADOW_GREEN, PINK } from '../styles/constants';
+import Comments from '../components/comments';
 
 const Page = ({ router }) => {
   const {
-    query: { owner, name, number }
+    query: { owner, name, number },
   } = router;
 
   return owner && name && number ? (
@@ -17,7 +18,7 @@ const Page = ({ router }) => {
       variables={{
         owner,
         name,
-        number: Number(number)
+        number: Number(number),
       }}
     >
       {({ loading, error, data }) => {
@@ -29,9 +30,9 @@ const Page = ({ router }) => {
         const dataOwner = data.repository.owner;
         const { bodyHTML, title, comments } = dataIssue;
 
-        const createMarkup = () => {
-          return { __html: bodyHTML };
-        };
+        const createMarkup = () => ({
+          __html: bodyHTML,
+        });
 
         return (
           <Wrapper>
@@ -40,9 +41,9 @@ const Page = ({ router }) => {
               <Icon src="./static/icons/owner.png" />
               <p>{dataOwner.login}</p>
             </BlockLogin>
-            <Title>{title}.</Title>
+            <Title>{title}</Title>
             <Content dangerouslySetInnerHTML={createMarkup()} />
-            <Comments comments={comments.edges} />
+            {comments && <Comments comments={comments.edges} />}
           </Wrapper>
         );
       }}
@@ -89,5 +90,9 @@ const BlockLogin = styled.div`
     color: ${BROWN};
   }
 `;
+
+Page.propTypes = {
+  router: PropTypes.object.isRequired,
+};
 
 export default withRouter(Page);

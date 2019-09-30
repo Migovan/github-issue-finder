@@ -1,10 +1,11 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState } from 'react';
+import PropTypes from 'prop-types';
 
 const IssuesDataContext = createContext({
   dataIssues: null,
   paginate: 5,
   setDataIssues: () => {},
-  setPaginate: () => {}
+  setPaginate: () => {},
 });
 
 export default IssuesDataContext;
@@ -23,10 +24,14 @@ export const IssuesDataProvider = ({ children }) => {
         },
         setPaginate: value => {
           setPaginate(value);
-        }
+        },
       }}
     >
       {children}
     </IssuesDataContext.Provider>
   );
+};
+
+IssuesDataProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };

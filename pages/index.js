@@ -1,54 +1,43 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Query } from "react-apollo";
-import styled from "styled-components";
-import Input from "../components/input";
-import Button from "../components/button";
-import IssuesList from "../components/issues-list";
-import Filter from "../components/filter";
-import Loader from "../components/loader";
-import { GET_ISSUES } from "../lib/queries";
-import IssuesDataContext from "../components/context/issues-data";
+import React, { useState, useEffect, useContext } from 'react';
+import { Query } from 'react-apollo';
+import styled from 'styled-components';
+import Input from '../components/input';
+import Button from '../components/button';
+import IssuesList from '../components/issues-list';
+import Filter from '../components/filter';
+import Loader from '../components/loader';
+import { GET_ISSUES } from '../lib/queries';
+import IssuesDataContext from '../components/context/issues-data';
 
 const options = [
-  { name: "All", states: null },
-  { name: "Closed", states: "CLOSED" },
-  { name: "Open", states: "OPEN" }
+  {
+    name: 'All',
+    states: null,
+  },
+  {
+    name: 'Closed',
+    states: 'CLOSED',
+  },
+  {
+    name: 'Open',
+    states: 'OPEN',
+  },
 ];
 
 const Page = () => {
-  const [owner, setOwner] = useState("");
-  const [name, setName] = useState("");
+  const [owner, setOwner] = useState('');
+  const [name, setName] = useState('');
   const [send, setSend] = useState(false);
-  const [errorOwner, setErrorOwner] = useState("");
-  const [errorName, setErrorName] = useState("");
+  const [errorOwner, setErrorOwner] = useState(false);
+  const [errorName, setErrorName] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [states, setStates] = useState(null);
-  const { dataIssues, setDataIssues, paginate, setPaginate } = useContext(
-    IssuesDataContext
-  );
+  const { dataIssues, setDataIssues, paginate, setPaginate } = useContext(IssuesDataContext);
 
   useEffect(() => {
-    setOwner(localStorage.getItem("myOwnerInLocalStorage"));
-    setName(localStorage.getItem("myNameInLocalStorage"));
+    setOwner(localStorage.getItem('myOwnerInLocalStorage'));
+    setName(localStorage.getItem('myNameInLocalStorage'));
   }, [owner]);
-
-  const onChangeOwner = value => {
-    localStorage.setItem("myOwnerInLocalStorage", value);
-    setOwner(localStorage.getItem("myOwnerInLocalStorage"));
-    setErrorOwner(false);
-    reset();
-  };
-
-  const onChangeName = value => {
-    localStorage.setItem("myNameInLocalStorage", value);
-    setName(localStorage.getItem("myNameInLocalStorage"));
-    setErrorName(false);
-    reset();
-  };
-
-  const changePaginate = () => {
-    setPaginate(paginate + 5);
-  };
 
   const reset = () => {
     setDataIssues(null);
@@ -57,20 +46,38 @@ const Page = () => {
     setDisabled(false);
   };
 
+  const onChangeOwner = value => {
+    localStorage.setItem('myOwnerInLocalStorage', value);
+    setOwner(localStorage.getItem('myOwnerInLocalStorage'));
+    setErrorOwner(false);
+    reset();
+  };
+
+  const onChangeName = value => {
+    localStorage.setItem('myNameInLocalStorage', value);
+    setName(localStorage.getItem('myNameInLocalStorage'));
+    setErrorName(false);
+    reset();
+  };
+
+  const changePaginate = () => {
+    setPaginate(paginate + 5);
+  };
+
   return (
     <Container>
       <Form>
         <CustomInputOwner
           onChange={e => onChangeOwner(e.target.value)}
-          value={owner || ""}
-          label={"*Owner"}
+          value={owner || ''}
+          label="*Owner"
           error={errorOwner}
           errorMessage="Проверьте имя пользователя/организации."
         />
         <CustomInputName
           onChange={e => onChangeName(e.target.value)}
-          value={name || ""}
-          label={"*Name repository"}
+          value={name || ''}
+          label="*Name repository"
           error={errorName}
           errorMessage="Проверьте имя репозитория."
         />
@@ -89,18 +96,15 @@ const Page = () => {
               owner,
               name,
               paginate,
-              states
+              states,
             }}
           >
             {({ loading, error, data }) => {
               if (error) {
-                error && setDisabled(true);
-                if (
-                  String(error).includes("User") ||
-                  String(error).includes("Organization")
-                ) {
+                setDisabled(true);
+                if (String(error).includes('User') || String(error).includes('Organization')) {
                   setErrorOwner(true);
-                } else if (String(error).includes("Repository")) {
+                } else if (String(error).includes('Repository')) {
                   setErrorName(true);
                 }
                 return null;

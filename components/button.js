@@ -1,14 +1,27 @@
-import React from "react";
-import styled, { css } from "styled-components";
-import { BROWN, BOX_SHADOW_GREEN, PINK, YELLOW } from "../styles/constants";
+import React from 'react';
+import styled, { css } from 'styled-components';
+import PropTypes from 'prop-types';
+import { BROWN, BOX_SHADOW_GREEN, YELLOW } from '../styles/constants';
 
-const Button = ({ onClick, children, disabled, ...props }) => {
-  return (
-    <StyledButton {...props} onClick={onClick} disabled={disabled}>
-      {children}
-    </StyledButton>
-  );
-};
+const Button = ({ onClick, children, disabled, ...props }) => (
+  <StyledButton {...props} onClick={onClick} disabled={disabled}>
+    {children}
+  </StyledButton>
+);
+
+const Active = css`
+  &:hover {
+    background: #ec633e;
+    color: #efdd47;
+  }
+`;
+
+const NotActive = css`
+  &:hover {
+    background: #ec633e;
+    color: #efdd47;
+  }
+`;
 
 const StyledButton = styled.button`
   padding: 15px 40px;
@@ -20,20 +33,14 @@ const StyledButton = styled.button`
   color: ${BROWN};
   font-size: 15px;
   box-shadow: ${BOX_SHADOW_GREEN};
-  ${({ disabled }) =>
-    !disabled &&
-    css`
-      &:hover {
-        background: #ec633e;
-        color: #efdd47;
-      }
-    `}
-  ${({ disabled }) =>
-    disabled &&
-    css`
-      opacity: 0.7;
-      cursor: default;
-    `}
+  ${({ disabled }) => !disabled && Active}
+  ${({ disabled }) => disabled && NotActive}
 `;
+
+Button.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  children: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
+};
 
 export default Button;
