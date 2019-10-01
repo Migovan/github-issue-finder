@@ -54,6 +54,9 @@ const List = styled.div`
   font-weight: 500;
   box-shadow: ${BOX_SHADOW_GREEN};
   margin-bottom: 20px;
+  ul {
+    padding: 0;
+  }
   li {
     display: flex;
     align-items: center;

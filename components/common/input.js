@@ -12,15 +12,20 @@ const Input = ({ onChange, value, label, error, errorMessage, ...props }) => (
 );
 
 const Wrraper = styled.div`
+  width: 100%;
+  min-width: 250px;
   display: flex;
   flex-direction: column;
-  width: 100%;
 `;
 
 const Label = styled.span`
   margin-bottom: 3px;
   font-size: 12px;
   color: #ead098;
+
+  @media (max-width: 400px) {
+    display: none;
+  }
 `;
 const StyledInput = styled.input`
   outline: none;
@@ -31,6 +36,11 @@ const StyledInput = styled.input`
   color: ${BROWN};
   font-weight: 500;
   box-shadow: ${({ error }) => (error ? `-8px 8px ${RED}` : BOX_SHADOW_GREEN)};
+
+  @media (max-width: 400px) {
+    padding: 17px;
+    font-size: 18px;
+  }
 `;
 
 const ErrorMessage = styled.span`

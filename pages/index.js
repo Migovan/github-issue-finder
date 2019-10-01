@@ -81,9 +81,9 @@ const Page = () => {
           error={errorName}
           errorMessage="Проверьте имя репозитория."
         />
-        <Button onClick={() => setSend(true)} type="button" disabled={disabled}>
+        <CustomSearchButton onClick={() => setSend(true)} type="button" disabled={disabled}>
           Search
-        </Button>
+        </CustomSearchButton>
       </Form>
       {send || dataIssues ? (
         <>
@@ -138,6 +138,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: 800px) {
+    width: 95%;
+  }
 `;
 
 const CustomInputOwner = styled(Input)`
@@ -153,17 +157,33 @@ const Form = styled.form`
   flex-direction: column;
   align-items: center;
   width: 30%;
+
+  @media (max-width: 400px) {
+    width: 100%;
+  }
 `;
 
-const CustomButton = styled(Button)`
-  width: 20%;
+const CustomSearchButton = styled(Button)`
+  @media (max-width: 400px) {
+    width: 100%;
+    padding: 18px 40px;
+    font-size: 18px;
+    margin-top: 8px;
+  }
 `;
+
+const CustomButton = styled(Button)``;
 
 const BlockFilter = styled.div`
   display: flex;
   justify-content: flex-start;
   width: 100%;
   margin-top: 30px;
+
+  @media (max-width: 400px) {
+    display: block;
+    margin-top: 50px;
+  }
 `;
 
 const CustomLoader = styled(Loader)`
