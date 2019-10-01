@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
+import PropTypes, { object } from 'prop-types';
 import { BROWN, PINK } from '../styles/constants';
 
 const Filter = ({ options, onChange, ...props }) => {
@@ -90,7 +90,7 @@ const Toggle = styled.div`
 `;
 
 Filter.propTypes = {
-  options: PropTypes.arrayOf.isRequired,
+  options: PropTypes.arrayOf(object).isRequired,
   onChange: PropTypes.func.isRequired,
 };
 

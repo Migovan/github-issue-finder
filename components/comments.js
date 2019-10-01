@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import PropTypes from 'prop-types';
+import PropTypes, { object } from 'prop-types';
 import { PINK, BOX_SHADOW_GREEN } from '../styles/constants';
 
 const Comments = ({ comments }) =>
@@ -67,7 +67,7 @@ const Date = styled.time`
 `;
 
 Comments.propTypes = {
-  comments: PropTypes.arrayOf.isRequired,
+  comments: PropTypes.arrayOf(object).isRequired,
 };
 
 export default Comments;

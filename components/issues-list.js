@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import PropTypes from 'prop-types';
+import PropTypes, { object } from 'prop-types';
 import { BROWN, BOX_SHADOW_GREEN, PINK, RED } from '../styles/constants';
 
 const IssuesList = ({ data, owner, name }) => {
@@ -79,7 +79,7 @@ const Tag = styled.span`
 `;
 
 IssuesList.propTypes = {
-  data: PropTypes.objectOf.isRequired,
+  data: PropTypes.objectOf(object).isRequired,
   owner: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 };
