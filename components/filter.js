@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes, { object } from 'prop-types';
-import { BROWN, PINK } from '../styles/constants';
+import { BROWN, PINK } from './styles/constants';
 
 const Filter = ({ options, onChange, ...props }) => {
   const [checked, setChecked] = useState('');
@@ -15,7 +15,7 @@ const Filter = ({ options, onChange, ...props }) => {
     const distanceButton = buttonsElem.current.childNodes[
       index !== -1 ? index : 0
     ].getBoundingClientRect().left;
-    const cordinateForToggle = distanceButton - widthFilter;
+    const cordinateForToggle = distanceButton - widthFilter - 2;
 
     setCoordinateElem(String(cordinateForToggle));
   };

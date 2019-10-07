@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
-import { BROWN, BOX_SHADOW_GREEN, YELLOW } from '../../styles/constants';
+import { BOX_SHADOW_GREEN, YELLOW } from '../styles/constants';
 
 const Button = ({ onClick, children, disabled, ...props }) => (
   <StyledButton {...props} onClick={onClick} disabled={disabled}>
@@ -30,7 +30,6 @@ const StyledButton = styled.button`
   font-weight: 500;
   cursor: pointer;
   outline: none;
-  color: ${BROWN};
   font-size: 15px;
   box-shadow: ${BOX_SHADOW_GREEN};
   ${({ disabled }) => !disabled && Active}

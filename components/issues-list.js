@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import PropTypes, { object } from 'prop-types';
-import { BROWN, BOX_SHADOW_GREEN, PINK, RED } from '../styles/constants';
+import { BOX_SHADOW_GREEN, PINK, RED } from './styles/constants';
 
 const IssuesList = ({ data, owner, name }) => {
   const issues = data.repository.issues.edges;
@@ -12,7 +12,7 @@ const IssuesList = ({ data, owner, name }) => {
       <List>
         {issues.map(i => {
           const {
-            node: { id, title, author, number, closed },
+            node: { id, title, number, closed },
           } = i;
 
           return (
@@ -27,11 +27,13 @@ const IssuesList = ({ data, owner, name }) => {
                       number,
                     },
                   }}
-                  as={`/${author.login}`}
+                  as={`/issue-${number}`}
                 >
-                  <a href={`/${author.login}`}>{title}</a>
+                  <a href={`/issue-${number}`} className="font-base">
+                    {title}
+                  </a>
                 </Link>
-                <Tag closed={closed}>{closed ? 'closed' : 'open'}</Tag>
+                <Tag isClosed={closed}>{closed ? 'closed' : 'open'}</Tag>
               </li>
             </ul>
           );
@@ -61,9 +63,6 @@ const List = styled.div`
     display: flex;
     align-items: center;
     a {
-      color: ${BROWN};
-      text-decoration: none;
-      font-size: 20px;
       margin-right: 10px;
       &:hover {
         text-decoration: underline;
@@ -74,10 +73,10 @@ const List = styled.div`
 
 const Tag = styled.span`
   font-size: 11px;
-  border: ${({ closed }) => (closed ? `2px solid ${RED}` : '2px solid #97b088')};
+  border: ${({ isClosed }) => (isClosed ? `2px solid ${RED}` : '2px solid #97b088')};
   padding: 1px 3px;
   border-radius: 5px;
-  color: ${({ closed }) => (closed ? RED : '#97b088')};
+  color: ${({ isClosed }) => (isClosed ? RED : '#97b088')};
   font-weight: 600;
 `;
 

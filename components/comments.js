@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import PropTypes, { object } from 'prop-types';
-import { PINK, BOX_SHADOW_GREEN } from '../styles/constants';
+import { PINK, BOX_SHADOW_GREEN } from './styles/constants';
 
 const Comments = ({ comments }) =>
   comments.map(i => {
@@ -18,14 +18,14 @@ const Comments = ({ comments }) =>
       __html: bodyHTML,
     });
     return (
-      <Comment key={id}>
+      <Comment key={id} className="font-base">
         <Avatar src={avatarUrl} />
         <TextBlock>
           <Info>
             <Login>{login}</Login>
             <Date>{moment(publishedAt).format('DD MMMM YYYY')}</Date>
           </Info>
-          <div dangerouslySetInnerHTML={createMarkup()} />
+          <MainContent dangerouslySetInnerHTML={createMarkup()} />
         </TextBlock>
       </Comment>
     );
@@ -37,28 +37,46 @@ const Comment = styled.div`
   background: ${PINK};
   box-shadow: ${BOX_SHADOW_GREEN};
   padding: 30px;
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
 `;
 
 const Avatar = styled.img`
   width: 80px;
   height: 80px;
   border-radius: 5px;
-  margin-right: 30px;
+  margin: 0 30px 15px 0;
 `;
 
 const TextBlock = styled.div`
-  width: 100%;
+  width: 80%;
+
+  @media (max-width: 500px) {
+    width: 100%;
+  }
 `;
 
 const Info = styled.div`
   display: flex;
+  align-items: baseline;
   width: 100%;
   border-bottom: 1px solid #aba7a7;
   padding-bottom: 10px;
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
+`;
+
+const MainContent = styled.p`
+  margin-top: 10px;
 `;
 
 const Login = styled.span`
   margin-right: 10px;
+  font-weight: bold;
 `;
 
 const Date = styled.time`

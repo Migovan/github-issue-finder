@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { BROWN, RED, BOX_SHADOW_GREEN } from '../../styles/constants';
+import { RED, BOX_SHADOW_GREEN } from '../styles/constants';
 
 const Input = ({ onChange, value, label, error, errorMessage, ...props }) => (
   <Wrraper {...props}>
@@ -33,7 +33,6 @@ const StyledInput = styled.input`
   border: 0px solid #000;
   cursor: pointer;
   font-size: 15px;
-  color: ${BROWN};
   font-weight: 500;
   box-shadow: ${({ error }) => (error ? `-8px 8px ${RED}` : BOX_SHADOW_GREEN)};
 

@@ -4,8 +4,9 @@ import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { GET_ISSUE } from '../lib/queries';
-import { BROWN, BOX_SHADOW_GREEN, PINK } from '../styles/constants';
+import { BOX_SHADOW_GREEN, PINK } from '../components/styles/constants';
 import Comments from '../components/comments';
+import MaxWidth from '../components/styles/max-width';
 
 const Page = ({ router }) => {
   const {
@@ -28,6 +29,13 @@ const Page = ({ router }) => {
 
         const dataIssue = data.repository.issue;
         const dataOwner = data.repository.owner;
+        const { avatarUrl, repository } = dataOwner;
+        const {
+          description,
+          forkCount,
+          stargazers: { totalCount },
+        } = repository;
+
         const { bodyHTML, title, comments } = dataIssue;
 
         const createMarkup = () => ({
@@ -35,16 +43,39 @@ const Page = ({ router }) => {
         });
 
         return (
-          <Wrapper>
-            <Avatar src={dataOwner.avatarUrl} />
-            <BlockLogin>
-              <Icon src="./static/icons/owner.png" />
-              <p>{dataOwner.login}</p>
-            </BlockLogin>
-            <Title>{title}</Title>
-            <Content dangerouslySetInnerHTML={createMarkup()} />
-            {comments && <Comments comments={comments.edges} />}
-          </Wrapper>
+          <MaxWidth>
+            <Wrapper>
+              <DeatailOwner>
+                <Avatar src={avatarUrl} />
+                <DetailInfo>
+                  <Description>{description}</Description>
+                  <Block>
+                    <div>
+                      <Icon src="./static/icons/owner.png" />
+                      <p>{`${owner}/${name}`}</p>
+                    </div>
+                    {totalCount && (
+                      <div>
+                        <Icon src="./static/icons/star.png" />
+                        <p>{`Star ${totalCount}`}</p>
+                      </div>
+                    )}
+                    {forkCount && (
+                      <div>
+                        <Icon src="./static/icons/fork.png" />
+                        <p>{`Fork ${forkCount}`}</p>
+                      </div>
+                    )}
+                  </Block>
+                </DetailInfo>
+              </DeatailOwner>
+              <Title>{title}</Title>
+              {bodyHTML && (
+                <Content dangerouslySetInnerHTML={createMarkup()} className="font-base" />
+              )}
+              {comments && <Comments comments={comments.edges} />}
+            </Wrapper>
+          </MaxWidth>
         );
       }}
     </Query>
@@ -52,19 +83,40 @@ const Page = ({ router }) => {
 };
 
 const Wrapper = styled.div`
-  width: 70%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 50px;
   display: flex;
   flex-direction: column;
 `;
+
+const Description = styled.p`
+  margin-bottom: 20px;
+  max-width: 400px;
+`;
 const Title = styled.h1`
-  color: ${BROWN};
+  margin-bottom: 20px;
+  line-height: 1.2;
+`;
+
+const DeatailOwner = styled.div`
+  display: flex;
+  align-items: end;
+  margin-bottom: 60px;
+  background: #ddd8e6;
+  box-shadow: -8px 8px #04695f;
+  padding: 30px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
 `;
 
 const Avatar = styled.img`
-  width: 200px;
+  width: 100px;
+  height: 100px;
+  margin-right: 30px;
+
+  @media (max-width: 600px) {
+    margin-bottom: 20px;
+  }
 `;
 
 const Content = styled.div`
@@ -72,22 +124,28 @@ const Content = styled.div`
   background: ${PINK};
   font-weight: 500;
   box-shadow: ${BOX_SHADOW_GREEN};
-  color: ${BROWN};
 `;
 
 const Icon = styled.img`
   width: 20px;
   height: 20px;
   margin-right: 5px;
-  color: ${BROWN};
 `;
 
-const BlockLogin = styled.div`
+const DetailInfo = styled.div`
   display: flex;
-  align-items: baseline;
+  flex-direction: column;
+  justify-content: space-around;
+`;
 
-  p {
-    color: ${BROWN};
+const Block = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  div {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    font-size: 13px;
   }
 `;
 

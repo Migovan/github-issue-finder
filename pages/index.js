@@ -6,6 +6,7 @@ import Button from '../components/common/button';
 import IssuesList from '../components/issues-list';
 import Filter from '../components/filter';
 import Loader from '../components/common/loader';
+import MaxWidth from '../components/styles/max-width';
 import { GET_ISSUES } from '../lib/queries';
 import IssuesDataContext from '../components/context/issues-data';
 
@@ -65,83 +66,77 @@ const Page = () => {
   };
 
   return (
-    <Container>
-      <Form>
-        <CustomInputOwner
-          onChange={e => onChangeOwner(e.target.value)}
-          value={owner || ''}
-          label="*Owner"
-          error={errorOwner}
-          errorMessage="Проверьте имя пользователя/организации."
-        />
-        <CustomInputName
-          onChange={e => onChangeName(e.target.value)}
-          value={name || ''}
-          label="*Name repository"
-          error={errorName}
-          errorMessage="Проверьте имя репозитория."
-        />
-        <CustomSearchButton onClick={() => setSend(true)} type="button" disabled={disabled}>
-          Search
-        </CustomSearchButton>
-      </Form>
-      {send || dataIssues ? (
-        <>
-          <BlockFilter>
-            <Filter options={options} onChange={value => setStates(value)} />
-          </BlockFilter>
-          <Query
-            query={GET_ISSUES}
-            variables={{
-              owner,
-              name,
-              paginate,
-              states,
-            }}
-          >
-            {({ loading, error, data }) => {
-              if (error) {
-                setDisabled(true);
-                if (String(error).includes('User') || String(error).includes('Organization')) {
-                  setErrorOwner(true);
-                } else if (String(error).includes('Repository')) {
-                  setErrorName(true);
+    <MaxWidth>
+      <Container>
+        <Form>
+          <CustomInputOwner
+            onChange={e => onChangeOwner(e.target.value)}
+            value={owner || ''}
+            label="*Owner"
+            error={errorOwner}
+            errorMessage="Проверьте имя пользователя/организации."
+          />
+          <CustomInputName
+            onChange={e => onChangeName(e.target.value)}
+            value={name || ''}
+            label="*Name repository"
+            error={errorName}
+            errorMessage="Проверьте имя репозитория."
+          />
+          <CustomSearchButton onClick={() => setSend(true)} type="button" disabled={disabled}>
+            Search
+          </CustomSearchButton>
+        </Form>
+        {send || dataIssues ? (
+          <>
+            <BlockFilter>
+              <Filter options={options} onChange={value => setStates(value)} />
+            </BlockFilter>
+            <Query
+              query={GET_ISSUES}
+              variables={{
+                owner,
+                name,
+                paginate,
+                states,
+              }}
+            >
+              {({ loading, error, data }) => {
+                if (error) {
+                  setDisabled(true);
+                  if (String(error).includes('User') || String(error).includes('Organization')) {
+                    setErrorOwner(true);
+                  } else if (String(error).includes('Repository')) {
+                    setErrorName(true);
+                  }
+                  return null;
                 }
-                return null;
-              }
-              if (loading) {
-                return <CustomLoader />;
-              }
-              setDataIssues(data);
+                if (loading) {
+                  return <CustomLoader />;
+                }
+                setDataIssues(data);
 
-              return (
-                <>
-                  <IssuesList data={data} owner={owner} name={name} />
-                  <CustomButton onClick={changePaginate}>More</CustomButton>
-                </>
-              );
-            }}
-          </Query>
-        </>
-      ) : null}
-    </Container>
+                return (
+                  <>
+                    <IssuesList data={data} owner={owner} name={name} />
+                    <CustomButton onClick={changePaginate}>More</CustomButton>
+                  </>
+                );
+              }}
+            </Query>
+          </>
+        ) : null}
+      </Container>
+    </MaxWidth>
   );
 };
 
 export default Page;
 
 const Container = styled.div`
-  width: 60%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  @media (max-width: 800px) {
-    width: 95%;
-  }
 `;
 
 const CustomInputOwner = styled(Input)`
@@ -181,7 +176,6 @@ const BlockFilter = styled.div`
   margin-top: 30px;
 
   @media (max-width: 400px) {
-    display: block;
     margin-top: 50px;
   }
 `;

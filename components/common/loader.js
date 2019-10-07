@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { PINK } from '../../styles/constants';
+import { PINK } from '../styles/constants';
 
 const Loader = ({ ...props }) => (
   <StyledSpinner viewBox="0 0 50 50" {...props}>
