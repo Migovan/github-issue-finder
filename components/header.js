@@ -18,6 +18,10 @@ const Logo = styled.h1`
   font-size: 45px;
   color: #793976;
 
+  &:hover {
+    color: #92488f;
+  }
+
   @media (max-width: 400px) {
     margin: 30px 0 20px;
     font-size: 35px;

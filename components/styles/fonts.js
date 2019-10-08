@@ -18,7 +18,8 @@ const fonts = css`
   p,
   li,
   span,
-  input {
+  input,
+  button {
     color: ${BROWN};
   }
 

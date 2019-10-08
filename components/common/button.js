@@ -11,15 +11,15 @@ const Button = ({ onClick, children, disabled, ...props }) => (
 
 const Active = css`
   &:hover {
-    background: #ec633e;
-    color: #efdd47;
+    background: #dcc28c;
   }
 `;
 
 const NotActive = css`
+  cursor: default;
+  opacity: 0.7;
   &:hover {
-    background: #ec633e;
-    color: #efdd47;
+    background: ${YELLOW};
   }
 `;
 
@@ -32,12 +32,11 @@ const StyledButton = styled.button`
   outline: none;
   font-size: 15px;
   box-shadow: ${BOX_SHADOW_GREEN};
-  ${({ disabled }) => !disabled && Active}
-  ${({ disabled }) => disabled && NotActive}
+  ${({ disabled }) => (!disabled ? Active : NotActive)}
 `;
 
 Button.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   children: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
 };

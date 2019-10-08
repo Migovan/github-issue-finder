@@ -44,7 +44,8 @@ module.exports = {
     'object-curly-newline': 'off',
     'import/no-extraneous-dependencies': 'off',
     'implicit-arrow-linebreak': 'off',
-    "react/react-in-jsx-scope": "off",
-    "import/prefer-default-export": "off",
+    'react/react-in-jsx-scope': 'off',
+    'import/prefer-default-export': 'off',
+    'no-else-return': 'off',
   },
 };

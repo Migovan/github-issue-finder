@@ -3,10 +3,16 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { RED, BOX_SHADOW_GREEN } from '../styles/constants';
 
-const Input = ({ onChange, value, label, error, errorMessage, ...props }) => (
+const Input = ({ onChange, value, label, error, errorMessage, placeholder, ...props }) => (
   <Wrraper {...props}>
     {label && <Label>{label}</Label>}
-    <StyledInput value={value} onChange={e => onChange(e)} error={error} />
+    <StyledInput
+      value={value}
+      onChange={e => onChange(e)}
+      error={error}
+      placeholder={placeholder}
+      type="text"
+    />
     {error && <ErrorMessage>{errorMessage}</ErrorMessage>}
   </Wrraper>
 );
@@ -35,10 +41,16 @@ const StyledInput = styled.input`
   font-size: 15px;
   font-weight: 500;
   box-shadow: ${({ error }) => (error ? `-8px 8px ${RED}` : BOX_SHADOW_GREEN)};
+  &::placeholder {
+    color: transparent;
+  }
 
   @media (max-width: 400px) {
     padding: 17px;
     font-size: 18px;
+    &::placeholder {
+      color: #c1bdbd;
+    }
   }
 `;
 
@@ -51,6 +63,7 @@ const ErrorMessage = styled.span`
 Input.propTypes = {
   onChange: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
   label: PropTypes.string,
   error: PropTypes.bool,
   errorMessage: PropTypes.string,

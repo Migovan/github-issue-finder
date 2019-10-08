@@ -6,6 +6,7 @@ import Button from '../components/common/button';
 import IssuesList from '../components/issues-list';
 import Filter from '../components/filter';
 import Loader from '../components/common/loader';
+import Error from '../components/common/error';
 import MaxWidth from '../components/styles/max-width';
 import { GET_ISSUES } from '../lib/queries';
 import IssuesDataContext from '../components/context/issues-data';
@@ -28,7 +29,7 @@ const options = [
 const Page = () => {
   const [owner, setOwner] = useState('');
   const [name, setName] = useState('');
-  const [send, setSend] = useState(false);
+  const [sent, setSent] = useState(false);
   const [errorOwner, setErrorOwner] = useState(false);
   const [errorName, setErrorName] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -40,10 +41,15 @@ const Page = () => {
     setName(localStorage.getItem('myNameInLocalStorage'));
   }, [owner]);
 
+  const handleSubmit = e => {
+    setSent(true);
+    e.preventDefault();
+  };
+
   const reset = () => {
     setDataIssues(null);
     setPaginate(5);
-    setSend(false);
+    setSent(false);
     setDisabled(false);
   };
 
@@ -65,33 +71,57 @@ const Page = () => {
     setPaginate(paginate + 5);
   };
 
+  const errorProcessing = error => {
+    setDisabled(true);
+    switch (true) {
+      case !owner && !name:
+        setErrorOwner(true);
+        setErrorName(true);
+        return null;
+      case !owner:
+        setErrorOwner(true);
+        return null;
+      case !name:
+        setErrorName(true);
+        return null;
+      case String(error).includes('401'):
+        return <Error>Please update token.</Error>;
+      default:
+        return <Error>Nothing found for your request.</Error>;
+    }
+  };
+
   return (
     <MaxWidth>
       <Container>
-        <Form>
+        <Form onSubmit={e => handleSubmit(e)}>
           <CustomInputOwner
             onChange={e => onChangeOwner(e.target.value)}
             value={owner || ''}
             label="*Owner"
+            placeholder="owner"
             error={errorOwner}
-            errorMessage="Проверьте имя пользователя/организации."
+            errorMessage="Required field."
           />
           <CustomInputName
             onChange={e => onChangeName(e.target.value)}
             value={name || ''}
             label="*Name repository"
+            placeholder="name repository"
             error={errorName}
-            errorMessage="Проверьте имя репозитория."
+            errorMessage="Required field."
           />
-          <CustomSearchButton onClick={() => setSend(true)} type="button" disabled={disabled}>
+          <CustomSearchButton type="submit" disabled={disabled}>
             Search
           </CustomSearchButton>
         </Form>
-        {send || dataIssues ? (
+        {sent || dataIssues ? (
           <>
-            <BlockFilter>
-              <Filter options={options} onChange={value => setStates(value)} />
-            </BlockFilter>
+            {dataIssues && (
+              <BlockFilter>
+                <Filter options={options} onChange={value => setStates(value)} />
+              </BlockFilter>
+            )}
             <Query
               query={GET_ISSUES}
               variables={{
@@ -103,22 +133,21 @@ const Page = () => {
             >
               {({ loading, error, data }) => {
                 if (error) {
-                  setDisabled(true);
-                  if (String(error).includes('User') || String(error).includes('Organization')) {
-                    setErrorOwner(true);
-                  } else if (String(error).includes('Repository')) {
-                    setErrorName(true);
-                  }
-                  return null;
+                  return errorProcessing(error);
                 }
                 if (loading) {
                   return <CustomLoader />;
                 }
+                if (!data.repository.issues.edges.length > 0) {
+                  setDisabled(true);
+                  return <Error>Nothing found for your request.</Error>;
+                }
+
                 setDataIssues(data);
 
                 return (
                   <>
-                    <IssuesList data={data} owner={owner} name={name} />
+                    <IssuesList data={data} />
                     <CustomButton onClick={changePaginate}>More</CustomButton>
                   </>
                 );

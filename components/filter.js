@@ -40,8 +40,8 @@ const Filter = ({ options, onChange, ...props }) => {
 
         return (
           <Button
-            key={states}
             {...props}
+            key={states}
             onClick={e => {
               checkedFilter(e.target);
             }}
@@ -75,7 +75,7 @@ const Button = styled.button`
   transition: 0.3s;
 
   &:hover {
-    opacity: 0.8;
+    background: #ddd8e645;
   }
 `;
 

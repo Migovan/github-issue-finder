@@ -4,8 +4,12 @@ import Link from 'next/link';
 import PropTypes, { object } from 'prop-types';
 import { BOX_SHADOW_GREEN, PINK, RED } from './styles/constants';
 
-const IssuesList = ({ data, owner, name }) => {
+const IssuesList = ({ data }) => {
   const issues = data.repository.issues.edges;
+
+  const getNumberIssue = number => {
+    localStorage.setItem('myNumberInLocalStorage', number);
+  };
 
   return (
     <Wrraper>
@@ -21,15 +25,14 @@ const IssuesList = ({ data, owner, name }) => {
                 <Link
                   href={{
                     pathname: '/[code]',
-                    query: {
-                      owner,
-                      name,
-                      number,
-                    },
                   }}
                   as={`/issue-${number}`}
                 >
-                  <a href={`/issue-${number}`} className="font-base">
+                  <a
+                    href={`/issue-${number}`}
+                    onClick={() => getNumberIssue(number)}
+                    className="font-base"
+                  >
                     {title}
                   </a>
                 </Link>
@@ -82,8 +85,6 @@ const Tag = styled.span`
 
 IssuesList.propTypes = {
   data: PropTypes.objectOf(object).isRequired,
-  owner: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
 };
 
 export default IssuesList;

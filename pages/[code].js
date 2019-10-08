@@ -1,85 +1,98 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'next/router';
-import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { GET_ISSUE } from '../lib/queries';
+import Loader from '../components/common/loader';
 import { BOX_SHADOW_GREEN, PINK } from '../components/styles/constants';
 import Comments from '../components/comments';
 import MaxWidth from '../components/styles/max-width';
+import separateNumber from '../lib/separate-number';
 
-const Page = ({ router }) => {
-  const {
-    query: { owner, name, number },
-  } = router;
+const Page = () => {
+  const [owner, setOwner] = useState('');
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  return owner && name && number ? (
-    <Query
-      query={GET_ISSUE}
-      variables={{
-        owner,
-        name,
-        number: Number(number),
-      }}
-    >
-      {({ loading, error, data }) => {
-        if (loading || error) {
-          return null;
-        }
+  useEffect(() => {
+    setOwner(localStorage.getItem('myOwnerInLocalStorage'));
+    setName(localStorage.getItem('myNameInLocalStorage'));
+    setNumber(localStorage.getItem('myNumberInLocalStorage'));
+  }, []);
 
-        const dataIssue = data.repository.issue;
-        const dataOwner = data.repository.owner;
-        const { avatarUrl, repository } = dataOwner;
-        const {
-          description,
-          forkCount,
-          stargazers: { totalCount },
-        } = repository;
+  return (
+    <MaxWidth>
+      <Wrapper>
+        {owner && name && number ? (
+          <Query
+            query={GET_ISSUE}
+            variables={{
+              owner: localStorage.getItem('myOwnerInLocalStorage'),
+              name: localStorage.getItem('myNameInLocalStorage'),
+              number: Number(number),
+            }}
+          >
+            {({ loading, error, data }) => {
+              if (error) {
+                return null;
+              }
+              if (loading) {
+                return <CustomLoader />;
+              }
 
-        const { bodyHTML, title, comments } = dataIssue;
+              const dataIssue = data.repository.issue;
+              const dataOwner = data.repository.owner;
+              const { avatarUrl, repository } = dataOwner;
+              const {
+                description,
+                forkCount,
+                stargazers: { totalCount },
+              } = repository;
 
-        const createMarkup = () => ({
-          __html: bodyHTML,
-        });
+              const { bodyHTML, title, comments } = dataIssue;
 
-        return (
-          <MaxWidth>
-            <Wrapper>
-              <DeatailOwner>
-                <Avatar src={avatarUrl} />
-                <DetailInfo>
-                  <Description>{description}</Description>
-                  <Block>
-                    <div>
-                      <Icon src="./static/icons/owner.png" />
-                      <p>{`${owner}/${name}`}</p>
-                    </div>
-                    {totalCount && (
-                      <div>
-                        <Icon src="./static/icons/star.png" />
-                        <p>{`Star ${totalCount}`}</p>
-                      </div>
-                    )}
-                    {forkCount && (
-                      <div>
-                        <Icon src="./static/icons/fork.png" />
-                        <p>{`Fork ${forkCount}`}</p>
-                      </div>
-                    )}
-                  </Block>
-                </DetailInfo>
-              </DeatailOwner>
-              <Title>{title}</Title>
-              {bodyHTML && (
-                <Content dangerouslySetInnerHTML={createMarkup()} className="font-base" />
-              )}
-              {comments && <Comments comments={comments.edges} />}
-            </Wrapper>
-          </MaxWidth>
-        );
-      }}
-    </Query>
-  ) : null;
+              const createMarkup = () => ({
+                __html: bodyHTML,
+              });
+
+              return (
+                <>
+                  <DeatailOwner>
+                    <Avatar src={avatarUrl} />
+                    <DetailInfo>
+                      <Description>{description}</Description>
+                      <Block>
+                        <div>
+                          <Icon src="./static/icons/owner.png" />
+                          <p>{`${owner}/${name}`}</p>
+                        </div>
+                        {totalCount && (
+                          <div>
+                            <Icon src="./static/icons/star.png" />
+                            <p>{`Star ${separateNumber(totalCount)}`}</p>
+                          </div>
+                        )}
+                        {forkCount && (
+                          <div>
+                            <Icon src="./static/icons/fork.png" />
+                            <p>{`Fork ${separateNumber(forkCount)}`}</p>
+                          </div>
+                        )}
+                      </Block>
+                    </DetailInfo>
+                  </DeatailOwner>
+                  <Title>{title}</Title>
+                  {bodyHTML && (
+                    <Content dangerouslySetInnerHTML={createMarkup()} className="font-base" />
+                  )}
+                  {comments && <Comments comments={comments.edges} />}
+                </>
+              );
+            }}
+          </Query>
+        ) : null}
+      </Wrapper>
+    </MaxWidth>
+  );
 };
 
 const Wrapper = styled.div`
@@ -129,7 +142,7 @@ const Content = styled.div`
 const Icon = styled.img`
   width: 20px;
   height: 20px;
-  margin-right: 5px;
+  margin-right: 8px;
 `;
 
 const DetailInfo = styled.div`
@@ -146,11 +159,12 @@ const Block = styled.div`
     align-items: center;
     margin-right: 15px;
     font-size: 13px;
+    margin-bottom: 10px;
   }
 `;
 
-Page.propTypes = {
-  router: PropTypes.object.isRequired,
-};
+const CustomLoader = styled(Loader)`
+  margin-top: 100px;
+`;
 
-export default withRouter(Page);
+export default Page;
