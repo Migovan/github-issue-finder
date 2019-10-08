@@ -138,7 +138,10 @@ const Page = () => {
                 if (loading) {
                   return <CustomLoader />;
                 }
-                if (!data.repository.issues.edges.length > 0) {
+
+                const issues = data.repository.issues.edges;
+
+                if (!issues.length > 0) {
                   setDisabled(true);
                   return <Error>Nothing found for your request.</Error>;
                 }
@@ -147,7 +150,7 @@ const Page = () => {
 
                 return (
                   <>
-                    <IssuesList data={data} />
+                    <IssuesList issues={issues} />
                     <CustomButton onClick={changePaginate}>More</CustomButton>
                   </>
                 );

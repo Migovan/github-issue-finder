@@ -4,9 +4,7 @@ import Link from 'next/link';
 import PropTypes, { object } from 'prop-types';
 import { BOX_SHADOW_GREEN, PINK, RED } from './styles/constants';
 
-const IssuesList = ({ data }) => {
-  const issues = data.repository.issues.edges;
-
+const IssuesList = ({ issues }) => {
   const getNumberIssue = number => {
     localStorage.setItem('myNumberInLocalStorage', number);
   };
@@ -84,7 +82,7 @@ const Tag = styled.span`
 `;
 
 IssuesList.propTypes = {
-  data: PropTypes.objectOf(object).isRequired,
+  issues: PropTypes.arrayOf(object).isRequired,
 };
 
 export default IssuesList;
