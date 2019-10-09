@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "precommit": "lint-staged",
-    "lint": "eslint components/ lib/ pages/ --fix"
+    "lint:js": "eslint components/ lib/ pages/ --fix",
+    "lint:css": "stylelint components/ pages/ --fix"
   },
   "author": "artem",
   "license": "ISC",
@@ -23,6 +24,9 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^2.1.2",
+    "stylelint": "^11.0.0",
+    "stylelint-config-recommended": "^3.0.0",
+    "stylelint-config-styled-components": "^0.1.1",
     "husky": "^1.3.1",
     "lint-staged": "^8.2.0",
     "prettier": "^1.18.2",
@@ -49,7 +53,8 @@
   },
   "lint-staged": {
     "*.(js|jsx)": [
-      "yarn run lint",
+      "yarn run lint:js",
+      "yarn run lint:css",
       "git add"
     ]
   }
