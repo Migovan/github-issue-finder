@@ -88,4 +88,4 @@ Comments.propTypes = {
   comments: PropTypes.arrayOf(object).isRequired,
 };
 
-export default Comments;
+export default React.memo(Comments);

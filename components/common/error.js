@@ -14,4 +14,4 @@ Error.propTypes = {
   children: PropTypes.string.isRequired,
 };
 
-export default Error;
+export default React.memo(Error);

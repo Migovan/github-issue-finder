@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
 import Input from '../components/common/input';
@@ -34,7 +34,7 @@ const Page = () => {
   const [errorName, setErrorName] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [states, setStates] = useState(null);
-  const { dataIssues, setDataIssues, paginate, setPaginate } = useContext(IssuesDataContext);
+  const { dataIssues, setDataIssues, first, setFirst } = useContext(IssuesDataContext);
 
   useEffect(() => {
     setOwner(localStorage.getItem('myOwnerInLocalStorage'));
@@ -45,31 +45,34 @@ const Page = () => {
     setSent(true);
     e.preventDefault();
   };
+  const handleFilter = useCallback(value => {
+    setStates(value);
+  }, []);
 
   const reset = () => {
     setDataIssues(null);
-    setPaginate(5);
+    setFirst(5);
     setSent(false);
     setDisabled(false);
   };
 
-  const onChangeOwner = value => {
-    localStorage.setItem('myOwnerInLocalStorage', value);
+  const onChangeOwner = useCallback(e => {
+    localStorage.setItem('myOwnerInLocalStorage', e.target.value);
     setOwner(localStorage.getItem('myOwnerInLocalStorage'));
     setErrorOwner(false);
     reset();
-  };
+  }, []);
 
-  const onChangeName = value => {
-    localStorage.setItem('myNameInLocalStorage', value);
+  const onChangeName = useCallback(e => {
+    localStorage.setItem('myNameInLocalStorage', e.target.value);
     setName(localStorage.getItem('myNameInLocalStorage'));
     setErrorName(false);
     reset();
-  };
+  }, []);
 
-  const changePaginate = () => {
-    setPaginate(paginate + 5);
-  };
+  const changeFirst = useCallback(() => {
+    setFirst(first + 5);
+  }, [first]);
 
   const errorProcessing = error => {
     setDisabled(true);
@@ -94,9 +97,9 @@ const Page = () => {
   return (
     <MaxWidth>
       <Container>
-        <Form onSubmit={e => handleSubmit(e)}>
+        <Form onSubmit={handleSubmit}>
           <CustomInputOwner
-            onChange={e => onChangeOwner(e.target.value)}
+            onChange={onChangeOwner}
             value={owner || ''}
             label="*Owner"
             placeholder="owner"
@@ -104,7 +107,7 @@ const Page = () => {
             errorMessage="Required field."
           />
           <CustomInputName
-            onChange={e => onChangeName(e.target.value)}
+            onChange={onChangeName}
             value={name || ''}
             label="*Name repository"
             placeholder="name repository"
@@ -119,7 +122,7 @@ const Page = () => {
           <>
             {dataIssues && (
               <BlockFilter>
-                <Filter options={options} onChange={value => setStates(value)} />
+                <Filter options={options} onChange={handleFilter} />
               </BlockFilter>
             )}
             <Query
@@ -127,7 +130,7 @@ const Page = () => {
               variables={{
                 owner,
                 name,
-                paginate,
+                first,
                 states,
               }}
             >
@@ -151,7 +154,7 @@ const Page = () => {
                 return (
                   <>
                     <IssuesList issues={issues} />
-                    <CustomButton onClick={changePaginate}>More</CustomButton>
+                    <CustomButton onClick={changeFirst}>More</CustomButton>
                   </>
                 );
               }}

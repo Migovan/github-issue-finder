@@ -69,4 +69,4 @@ Input.propTypes = {
   errorMessage: PropTypes.string,
 };
 
-export default Input;
+export default React.memo(Input);

@@ -5,7 +5,7 @@ module.exports = {
     node: true,
   },
   extends: ['airbnb'],
-  plugins: ['babel', 'react', 'prettier'],
+  plugins: ['babel', 'react', 'react-hooks', 'prettier'],
   parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 6,
@@ -47,5 +47,8 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'import/prefer-default-export': 'off',
     'no-else-return': 'off',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
+    'react-hooks/exhaustive-deps': 'off',
   },
 };
