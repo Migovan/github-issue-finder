@@ -3,7 +3,7 @@ import { Query } from 'react-apollo';
 import styled from 'styled-components';
 import { GET_ISSUES } from '../lib/queries';
 import IssuesDataContext from '../components/context/issues-data';
-import Input from '../components/common/input';
+import Form from '../components/form';
 import Button from '../components/common/button';
 import IssuesList from '../components/issues-list';
 import Filter from '../components/filter';
@@ -98,27 +98,16 @@ const Page = () => {
   return (
     <MaxWidth>
       <Container>
-        <Form onSubmit={handleSubmit}>
-          <CustomInputOwner
-            onChange={onChangeOwner}
-            value={owner || ''}
-            label="*Owner"
-            placeholder="owner"
-            error={errorOwner}
-            errorMessage="Required field."
-          />
-          <CustomInputName
-            onChange={onChangeName}
-            value={name || ''}
-            label="*Name repository"
-            placeholder="name repository"
-            error={errorName}
-            errorMessage="Required field."
-          />
-          <CustomSearchButton type="submit" disabled={disabled}>
-            Search
-          </CustomSearchButton>
-        </Form>
+        <Form
+          onSubmit={handleSubmit}
+          onChangeOwner={onChangeOwner}
+          onChangeName={onChangeName}
+          owner={owner}
+          name={name}
+          errorOwner={errorOwner}
+          errorName={errorName}
+          disabled={disabled}
+        />
         {sent || dataIssues ? (
           <>
             {dataIssues && (
@@ -171,34 +160,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const CustomInputOwner = styled(Input)`
-  margin-bottom: 15px;
-`;
-
-const CustomInputName = styled(Input)`
-  margin-bottom: 20px;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 30%;
-
-  @media (max-width: 400px) {
-    width: 100%;
-  }
-`;
-
-const CustomSearchButton = styled(Button)`
-  @media (max-width: 400px) {
-    width: 100%;
-    padding: 18px 40px;
-    font-size: 18px;
-    margin-top: 8px;
-  }
 `;
 
 const BlockFilter = styled.div`

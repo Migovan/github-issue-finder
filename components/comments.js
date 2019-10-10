@@ -17,6 +17,7 @@ const Comments = ({ comments }) =>
     const createMarkup = () => ({
       __html: bodyHTML,
     });
+
     return (
       <Comment key={id} className="font-base">
         <Avatar src={avatarUrl} />
