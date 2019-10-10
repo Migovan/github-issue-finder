@@ -97,7 +97,7 @@ const Page = () => {
 
   return (
     <MaxWidth>
-      <Container>
+      <Wrapper>
         <Form
           onSubmit={handleSubmit}
           onChangeOwner={onChangeOwner}
@@ -151,12 +151,12 @@ const Page = () => {
             </Query>
           </>
         ) : null}
-      </Container>
+      </Wrapper>
     </MaxWidth>
   );
 };
 
-const Container = styled.div`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
