@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Query } from 'react-apollo';
 import { GET_ISSUE } from '../lib/queries';
-import Loader from '../components/common/loader';
 import { BOX_SHADOW_GREEN, PINK } from '../components/styles/constants';
+import separateNumber from '../lib/separate-number';
+import Loader from '../components/common/loader';
+import Error from '../components/common/error';
 import Comments from '../components/comments';
 import MaxWidth from '../components/styles/max-width';
-import separateNumber from '../lib/separate-number';
 
 const Page = () => {
   const [owner, setOwner] = useState('');
@@ -14,8 +15,8 @@ const Page = () => {
   const [number, setNumber] = useState('');
 
   useEffect(() => {
-    setOwner(localStorage.getItem('myOwnerInLocalStorage'));
-    setName(localStorage.getItem('myNameInLocalStorage'));
+    setOwner(localStorage.getItem('owner'));
+    setName(localStorage.getItem('name'));
     setNumber(localStorage.getItem('myNumberInLocalStorage'));
   }, []);
 
@@ -26,14 +27,14 @@ const Page = () => {
           <Query
             query={GET_ISSUE}
             variables={{
-              owner: localStorage.getItem('myOwnerInLocalStorage'),
-              name: localStorage.getItem('myNameInLocalStorage'),
+              owner: localStorage.getItem('owner'),
+              name: localStorage.getItem('name'),
               number: Number(number),
             }}
           >
             {({ loading, error, data }) => {
               if (error) {
-                return null;
+                return <CustomError>Something went wrong.</CustomError>;
               }
               if (loading) {
                 return <CustomLoader />;
@@ -47,7 +48,6 @@ const Page = () => {
                 forkCount,
                 stargazers: { totalCount },
               } = repository;
-
               const { bodyHTML, title, comments } = dataIssue;
 
               const createMarkup = () => ({
@@ -165,6 +165,11 @@ const Block = styled.div`
 
 const CustomLoader = styled(Loader)`
   margin-top: 100px;
+`;
+
+const CustomError = styled(Error)`
+  text-align: center;
+  font-size: 25px;
 `;
 
 export default Page;

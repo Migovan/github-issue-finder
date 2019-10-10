@@ -85,4 +85,4 @@ IssuesList.propTypes = {
   issues: PropTypes.arrayOf(object).isRequired,
 };
 
-export default IssuesList;
+export default React.memo(IssuesList);

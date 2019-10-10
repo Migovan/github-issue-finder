@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
+import { GET_ISSUES } from '../lib/queries';
+import IssuesDataContext from '../components/context/issues-data';
 import Input from '../components/common/input';
 import Button from '../components/common/button';
 import IssuesList from '../components/issues-list';
@@ -8,8 +10,6 @@ import Filter from '../components/filter';
 import Loader from '../components/common/loader';
 import Error from '../components/common/error';
 import MaxWidth from '../components/styles/max-width';
-import { GET_ISSUES } from '../lib/queries';
-import IssuesDataContext from '../components/context/issues-data';
 
 const options = [
   {
@@ -37,14 +37,15 @@ const Page = () => {
   const { dataIssues, setDataIssues, first, setFirst } = useContext(IssuesDataContext);
 
   useEffect(() => {
-    setOwner(localStorage.getItem('myOwnerInLocalStorage'));
-    setName(localStorage.getItem('myNameInLocalStorage'));
-  }, [owner]);
+    setOwner(localStorage.getItem('owner'));
+    setName(localStorage.getItem('name'));
+  }, []);
 
   const handleSubmit = e => {
     setSent(true);
     e.preventDefault();
   };
+
   const handleFilter = useCallback(value => {
     setStates(value);
   }, []);
@@ -57,15 +58,15 @@ const Page = () => {
   };
 
   const onChangeOwner = useCallback(e => {
-    localStorage.setItem('myOwnerInLocalStorage', e.target.value);
-    setOwner(localStorage.getItem('myOwnerInLocalStorage'));
+    localStorage.setItem('owner', e.target.value);
+    setOwner(localStorage.getItem('owner'));
     setErrorOwner(false);
     reset();
   }, []);
 
   const onChangeName = useCallback(e => {
-    localStorage.setItem('myNameInLocalStorage', e.target.value);
-    setName(localStorage.getItem('myNameInLocalStorage'));
+    localStorage.setItem('name', e.target.value);
+    setName(localStorage.getItem('name'));
     setErrorName(false);
     reset();
   }, []);
@@ -154,7 +155,7 @@ const Page = () => {
                 return (
                   <>
                     <IssuesList issues={issues} />
-                    <CustomButton onClick={changeFirst}>More</CustomButton>
+                    <Button onClick={changeFirst}>More</Button>
                   </>
                 );
               }}
@@ -165,8 +166,6 @@ const Page = () => {
     </MaxWidth>
   );
 };
-
-export default Page;
 
 const Container = styled.div`
   display: flex;
@@ -202,8 +201,6 @@ const CustomSearchButton = styled(Button)`
   }
 `;
 
-const CustomButton = styled(Button)``;
-
 const BlockFilter = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -218,3 +215,5 @@ const BlockFilter = styled.div`
 const CustomLoader = styled(Loader)`
   margin-top: 100px;
 `;
+
+export default Page;

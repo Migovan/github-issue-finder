@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 
-const Header = () => (
-  <Logo>
-    <Link href="/">
-      <a href="/">Github issues finder</a>
-    </Link>
-  </Logo>
-);
+const Header = () => {
+  const [randomColor, setRandomColor] = useState('#793976');
+
+  const changeColor = () => {
+    const color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    setRandomColor(color);
+  };
+
+  return (
+    <Logo className="random" randomColor={randomColor}>
+      <Link href="/">
+        <a href="/" onMouseOver={changeColor}>
+          Github issues finder
+        </a>
+      </Link>
+    </Logo>
+  );
+};
 
 const Logo = styled.h1`
   text-align: center;
@@ -16,10 +27,10 @@ const Logo = styled.h1`
   font-family: 'Londrina Solid', cursive;
   cursor: pointer;
   font-size: 45px;
-  color: #793976;
+  color: ${({ randomColor }) => randomColor};
 
-  &:hover {
-    color: #92488f;
+  a {
+    padding: 30px;
   }
 
   @media (max-width: 400px) {
@@ -28,4 +39,4 @@ const Logo = styled.h1`
   }
 `;
 
-export default Header;
+export default React.memo(Header);
