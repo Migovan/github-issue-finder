@@ -5,7 +5,7 @@ import { BROWN, PINK } from './styles/constants';
 
 const Filter = ({ options, onChange, ...props }) => {
   const [checked, setChecked] = useState('');
-  const [widthElem, setWidthElem] = useState(String(null));
+  const [widthElem, setWidthElem] = useState(null);
   const [coordinateElem, setCoordinateElem] = useState('0');
   const buttonsElem = useRef(null);
 
@@ -16,8 +16,7 @@ const Filter = ({ options, onChange, ...props }) => {
       index !== -1 ? index : 0
     ].getBoundingClientRect().left;
     const cordinateForToggle = distanceButton - widthFilter - 2;
-
-    setCoordinateElem(String(cordinateForToggle));
+    setCoordinateElem(cordinateForToggle);
   };
 
   useEffect(() => {
@@ -35,7 +34,7 @@ const Filter = ({ options, onChange, ...props }) => {
           setChecked(states);
           onChange(states);
           buttonPosition(states);
-          setWidthElem(String(e.offsetWidth));
+          setWidthElem(e.offsetWidth);
         };
 
         return (

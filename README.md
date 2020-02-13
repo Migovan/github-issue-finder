@@ -5,5 +5,5 @@
 ```
 git clone https://github.com/Migovan/github-issue-finder.git
 yarn
-yarn start
+yarn dev
 ```

@@ -18,9 +18,7 @@ const Active = css`
 const NotActive = css`
   cursor: default;
   opacity: 0.7;
-  &:hover {
-    background: ${YELLOW};
-  }
+  pointer-events: none;
 `;
 
 const StyledButton = styled.button`
